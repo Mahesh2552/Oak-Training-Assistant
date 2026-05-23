@@ -31,16 +31,11 @@
         },
         {
           "step": 4,
-          "title": "Run ML classification",
-          "details": "Predict compound/class, compute confidence, and detect out-of-distribution signals."
-        },
-        {
-          "step": 5,
           "title": "Human review (if needed)",
           "details": "Analysts review low-confidence cases and add notes/labels."
         },
         {
-          "step": 6,
+          "step": 5,
           "title": "Decision + reporting",
           "details": "Generate a screening report with model version, evidence, and final decision."
         }
@@ -49,8 +44,7 @@
         "Python",
         "NumPy",
         "scikit-learn",
-        "FastAPI",
-        "Postgres",
+        "sqlite",
         "Streamlit (internal review UI)"
       ],
       "challenges": [
@@ -125,17 +119,12 @@
     {
       "s": "Raman Drug Detection",
       "p": "HAS_WORKFLOW_STEP",
-      "o": "Step 4: Run ML classification — Predict compound/class, compute confidence, and detect out-of-distribution signals."
+      "o": "Step 4: Human review (if needed) — Analysts review low-confidence cases and add notes/labels."
     },
     {
       "s": "Raman Drug Detection",
       "p": "HAS_WORKFLOW_STEP",
-      "o": "Step 5: Human review (if needed) — Analysts review low-confidence cases and add notes/labels."
-    },
-    {
-      "s": "Raman Drug Detection",
-      "p": "HAS_WORKFLOW_STEP",
-      "o": "Step 6: Decision + reporting — Generate a screening report with model version, evidence, and final decision."
+      "o": "Step 5: Decision + reporting — Generate a screening report with model version, evidence, and final decision."
     },
     {
       "s": "Raman Drug Detection",
@@ -155,12 +144,7 @@
     {
       "s": "Raman Drug Detection",
       "p": "USES_TECH",
-      "o": "FastAPI"
-    },
-    {
-      "s": "Raman Drug Detection",
-      "p": "USES_TECH",
-      "o": "Postgres"
+      "o": "sqlite"
     },
     {
       "s": "Raman Drug Detection",

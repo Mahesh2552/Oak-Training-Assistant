@@ -27,20 +27,16 @@ workflow:
     title: Match against reference library
     details: Compute similarity against curated reference spectra and known classes.
   - step: 4
-    title: Run ML classification
-    details: Predict compound/class, compute confidence, and detect out-of-distribution signals.
-  - step: 5
     title: Human review (if needed)
     details: Analysts review low-confidence cases and add notes/labels.
-  - step: 6
+  - step: 5
     title: Decision + reporting
     details: Generate a screening report with model version, evidence, and final decision.
 technologies_used:
   - Python
   - NumPy
   - scikit-learn
-  - FastAPI
-  - Postgres
+  - sqlite
   - Streamlit (internal review UI)
 challenges:
   - Fluorescence interference and device-to-device variability
