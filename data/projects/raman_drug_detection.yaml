@@ -40,7 +40,6 @@ technologies_used:
   - Streamlit (internal review UI)
 challenges:
   - Fluorescence interference and device-to-device variability
-  - Class imbalance and limited labeled data for rare compounds
   - Maintaining traceability across model versions and reference libraries
 use_cases:
   - Field screening at distribution points
