@@ -49,7 +49,6 @@
       ],
       "challenges": [
         "Fluorescence interference and device-to-device variability",
-        "Class imbalance and limited labeled data for rare compounds",
         "Maintaining traceability across model versions and reference libraries"
       ],
       "use_cases": [
@@ -155,11 +154,6 @@
       "s": "Raman Drug Detection",
       "p": "HAS_CHALLENGE",
       "o": "Fluorescence interference and device-to-device variability"
-    },
-    {
-      "s": "Raman Drug Detection",
-      "p": "HAS_CHALLENGE",
-      "o": "Class imbalance and limited labeled data for rare compounds"
     },
     {
       "s": "Raman Drug Detection",
