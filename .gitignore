@@ -1,0 +1,13 @@
+# Secrets — never commit
+.env
+
+# Python
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+
+# Vector store binaries — too large and environment-specific.
+# The app falls back to an in-memory index on Streamlit Cloud.
+# Commit graph_store/oak_graph.json and data/ instead.
+vector_store/

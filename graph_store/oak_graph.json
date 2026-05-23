@@ -1,0 +1,201 @@
+{
+  "version": 1,
+  "projects": {
+    "raman drug detection": {
+      "project_name": "Raman Drug Detection",
+      "overview": "Raman Drug Detection is a rapid screening project that uses Raman spectroscopy and machine learning to identify suspect pharmaceutical samples and potential counterfeit products. It is designed for fast triage: identify likely matches, flag anomalies, and route uncertain cases for confirmatory lab testing.",
+      "problem_statement": "Field teams need a fast, consistent way to screen medicines where packaging and labels can be misleading. Traditional lab methods are accurate but slow and expensive. The goal is to reduce time-to-decision while preserving traceability and quality controls.",
+      "architecture": [
+        "Ingestion service reads raw spectra from devices or uploads.",
+        "Pre-processing pipeline performs baseline correction, smoothing, normalization.",
+        "Feature extraction generates engineered spectral features and/or embeddings.",
+        "Classification service predicts candidate compounds and confidence.",
+        "Review UI shows spectrum, prediction, and audit trail.",
+        "Storage keeps raw spectra, processed spectra, model versions, and decisions."
+      ],
+      "workflow": [
+        {
+          "step": 1,
+          "title": "Capture spectrum",
+          "details": "Collect Raman spectrum from the handheld device or bench instrument."
+        },
+        {
+          "step": 2,
+          "title": "Pre-process spectrum",
+          "details": "Apply baseline correction, denoising, and normalization."
+        },
+        {
+          "step": 3,
+          "title": "Match against reference library",
+          "details": "Compute similarity against curated reference spectra and known classes."
+        },
+        {
+          "step": 4,
+          "title": "Run ML classification",
+          "details": "Predict compound/class, compute confidence, and detect out-of-distribution signals."
+        },
+        {
+          "step": 5,
+          "title": "Human review (if needed)",
+          "details": "Analysts review low-confidence cases and add notes/labels."
+        },
+        {
+          "step": 6,
+          "title": "Decision + reporting",
+          "details": "Generate a screening report with model version, evidence, and final decision."
+        }
+      ],
+      "technologies_used": [
+        "Python",
+        "NumPy",
+        "scikit-learn",
+        "FastAPI",
+        "Postgres",
+        "Streamlit (internal review UI)"
+      ],
+      "challenges": [
+        "Fluorescence interference and device-to-device variability",
+        "Class imbalance and limited labeled data for rare compounds",
+        "Maintaining traceability across model versions and reference libraries"
+      ],
+      "use_cases": [
+        "Field screening at distribution points",
+        "Rapid triage before confirmatory lab testing",
+        "Monitoring suspicious batches over time"
+      ],
+      "source_path": "D:\\Other\\oak training assistant groq api git\\data\\projects\\raman_drug_detection.yaml"
+    }
+  },
+  "triples": [
+    {
+      "s": "Raman Drug Detection",
+      "p": "HAS_OVERVIEW",
+      "o": "Overview"
+    },
+    {
+      "s": "Raman Drug Detection",
+      "p": "HAS_PROBLEM_STATEMENT",
+      "o": "Problem Statement"
+    },
+    {
+      "s": "Raman Drug Detection",
+      "p": "HAS_ARCHITECTURE_ITEM",
+      "o": "1. Ingestion service reads raw spectra from devices or uploads."
+    },
+    {
+      "s": "Raman Drug Detection",
+      "p": "HAS_ARCHITECTURE_ITEM",
+      "o": "2. Pre-processing pipeline performs baseline correction, smoothing, normalization."
+    },
+    {
+      "s": "Raman Drug Detection",
+      "p": "HAS_ARCHITECTURE_ITEM",
+      "o": "3. Feature extraction generates engineered spectral features and/or embeddings."
+    },
+    {
+      "s": "Raman Drug Detection",
+      "p": "HAS_ARCHITECTURE_ITEM",
+      "o": "4. Classification service predicts candidate compounds and confidence."
+    },
+    {
+      "s": "Raman Drug Detection",
+      "p": "HAS_ARCHITECTURE_ITEM",
+      "o": "5. Review UI shows spectrum, prediction, and audit trail."
+    },
+    {
+      "s": "Raman Drug Detection",
+      "p": "HAS_ARCHITECTURE_ITEM",
+      "o": "6. Storage keeps raw spectra, processed spectra, model versions, and decisions."
+    },
+    {
+      "s": "Raman Drug Detection",
+      "p": "HAS_WORKFLOW_STEP",
+      "o": "Step 1: Capture spectrum — Collect Raman spectrum from the handheld device or bench instrument."
+    },
+    {
+      "s": "Raman Drug Detection",
+      "p": "HAS_WORKFLOW_STEP",
+      "o": "Step 2: Pre-process spectrum — Apply baseline correction, denoising, and normalization."
+    },
+    {
+      "s": "Raman Drug Detection",
+      "p": "HAS_WORKFLOW_STEP",
+      "o": "Step 3: Match against reference library — Compute similarity against curated reference spectra and known classes."
+    },
+    {
+      "s": "Raman Drug Detection",
+      "p": "HAS_WORKFLOW_STEP",
+      "o": "Step 4: Run ML classification — Predict compound/class, compute confidence, and detect out-of-distribution signals."
+    },
+    {
+      "s": "Raman Drug Detection",
+      "p": "HAS_WORKFLOW_STEP",
+      "o": "Step 5: Human review (if needed) — Analysts review low-confidence cases and add notes/labels."
+    },
+    {
+      "s": "Raman Drug Detection",
+      "p": "HAS_WORKFLOW_STEP",
+      "o": "Step 6: Decision + reporting — Generate a screening report with model version, evidence, and final decision."
+    },
+    {
+      "s": "Raman Drug Detection",
+      "p": "USES_TECH",
+      "o": "Python"
+    },
+    {
+      "s": "Raman Drug Detection",
+      "p": "USES_TECH",
+      "o": "NumPy"
+    },
+    {
+      "s": "Raman Drug Detection",
+      "p": "USES_TECH",
+      "o": "scikit-learn"
+    },
+    {
+      "s": "Raman Drug Detection",
+      "p": "USES_TECH",
+      "o": "FastAPI"
+    },
+    {
+      "s": "Raman Drug Detection",
+      "p": "USES_TECH",
+      "o": "Postgres"
+    },
+    {
+      "s": "Raman Drug Detection",
+      "p": "USES_TECH",
+      "o": "Streamlit (internal review UI)"
+    },
+    {
+      "s": "Raman Drug Detection",
+      "p": "HAS_CHALLENGE",
+      "o": "Fluorescence interference and device-to-device variability"
+    },
+    {
+      "s": "Raman Drug Detection",
+      "p": "HAS_CHALLENGE",
+      "o": "Class imbalance and limited labeled data for rare compounds"
+    },
+    {
+      "s": "Raman Drug Detection",
+      "p": "HAS_CHALLENGE",
+      "o": "Maintaining traceability across model versions and reference libraries"
+    },
+    {
+      "s": "Raman Drug Detection",
+      "p": "HAS_USE_CASE",
+      "o": "Field screening at distribution points"
+    },
+    {
+      "s": "Raman Drug Detection",
+      "p": "HAS_USE_CASE",
+      "o": "Rapid triage before confirmatory lab testing"
+    },
+    {
+      "s": "Raman Drug Detection",
+      "p": "HAS_USE_CASE",
+      "o": "Monitoring suspicious batches over time"
+    }
+  ]
+}

@@ -1,0 +1,52 @@
+project_name: Raman Drug Detection
+overview: >
+  Raman Drug Detection is a rapid screening project that uses Raman spectroscopy
+  and machine learning to identify suspect pharmaceutical samples and potential
+  counterfeit products. It is designed for fast triage: identify likely matches,
+  flag anomalies, and route uncertain cases for confirmatory lab testing.
+problem_statement: >
+  Field teams need a fast, consistent way to screen medicines where packaging
+  and labels can be misleading. Traditional lab methods are accurate but slow
+  and expensive. The goal is to reduce time-to-decision while preserving
+  traceability and quality controls.
+architecture:
+  - Ingestion service reads raw spectra from devices or uploads.
+  - Pre-processing pipeline performs baseline correction, smoothing, normalization.
+  - Feature extraction generates engineered spectral features and/or embeddings.
+  - Classification service predicts candidate compounds and confidence.
+  - Review UI shows spectrum, prediction, and audit trail.
+  - Storage keeps raw spectra, processed spectra, model versions, and decisions.
+workflow:
+  - step: 1
+    title: Capture spectrum
+    details: Collect Raman spectrum from the handheld device or bench instrument.
+  - step: 2
+    title: Pre-process spectrum
+    details: Apply baseline correction, denoising, and normalization.
+  - step: 3
+    title: Match against reference library
+    details: Compute similarity against curated reference spectra and known classes.
+  - step: 4
+    title: Run ML classification
+    details: Predict compound/class, compute confidence, and detect out-of-distribution signals.
+  - step: 5
+    title: Human review (if needed)
+    details: Analysts review low-confidence cases and add notes/labels.
+  - step: 6
+    title: Decision + reporting
+    details: Generate a screening report with model version, evidence, and final decision.
+technologies_used:
+  - Python
+  - NumPy
+  - scikit-learn
+  - FastAPI
+  - Postgres
+  - Streamlit (internal review UI)
+challenges:
+  - Fluorescence interference and device-to-device variability
+  - Class imbalance and limited labeled data for rare compounds
+  - Maintaining traceability across model versions and reference libraries
+use_cases:
+  - Field screening at distribution points
+  - Rapid triage before confirmatory lab testing
+  - Monitoring suspicious batches over time
