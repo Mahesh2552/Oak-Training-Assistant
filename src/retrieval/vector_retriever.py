@@ -2,16 +2,18 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from pathlib import Path
+from typing import TYPE_CHECKING
 
-import chromadb
 from llama_index.core import StorageContext, VectorStoreIndex
 from llama_index.core.schema import NodeWithScore
 from llama_index.core.vector_stores import MetadataFilters
 from llama_index.core.vector_stores.types import FilterOperator, MetadataFilter
 from llama_index.embeddings.huggingface import HuggingFaceEmbedding
-from llama_index.vector_stores.chroma import ChromaVectorStore
 
 from config import settings
+
+if TYPE_CHECKING:
+    pass
 
 
 @dataclass(frozen=True)
@@ -21,10 +23,30 @@ class RetrievedSnippet:
     metadata: dict
 
 
-def _has_persisted_vectors(persist_dir: Path, collection_name: str) -> bool:
+def _has_persisted_vectors(persist_dir: Path) -> bool:
     """Return True only when the ChromaDB sqlite file exists and has data."""
     db_file = persist_dir / "chroma.sqlite3"
     return db_file.exists() and db_file.stat().st_size > 0
+
+
+def _build_persisted_index(
+    persist_dir: Path,
+    collection_name: str,
+    embed_model: HuggingFaceEmbedding,
+) -> VectorStoreIndex:
+    """Load the pre-built ChromaDB vector store (local / self-hosted only)."""
+    import chromadb
+    from llama_index.vector_stores.chroma import ChromaVectorStore
+
+    client = chromadb.PersistentClient(path=str(persist_dir))
+    collection = client.get_or_create_collection(collection_name)
+    vector_store = ChromaVectorStore(chroma_collection=collection)
+    storage_context = StorageContext.from_defaults(vector_store=vector_store)
+    return VectorStoreIndex.from_vector_store(
+        vector_store=vector_store,
+        storage_context=storage_context,
+        embed_model=embed_model,
+    )
 
 
 def _build_in_memory_index(
@@ -32,16 +54,16 @@ def _build_in_memory_index(
     graph_json_path: Path,
 ) -> VectorStoreIndex:
     """
-    Fallback for Streamlit Cloud (or any environment where the persisted
-    vector store was not committed).  Builds a transient in-memory index
-    directly from the graph JSON so the app is still usable.
+    Fallback for Streamlit Cloud (or any environment without a persisted
+    vector store). Builds a transient in-memory index from graph_store/oak_graph.json.
+    chromadb is NOT imported here, so this path works even if chromadb is absent.
     """
     from llama_index.core import Document
-    from src.utils.helpers import load_json, format_project_as_markdown, ProjectDoc
+    from src.utils.helpers import ProjectDoc, format_project_as_markdown, load_json
 
     graph = load_json(graph_json_path)
     documents: list[Document] = []
-    for key, rec in graph.get("projects", {}).items():
+    for _key, rec in graph.get("projects", {}).items():
         doc = ProjectDoc.from_dict(rec, source_path=str(rec.get("source_path", "")))
         documents.append(
             Document(
@@ -67,20 +89,15 @@ class VectorRetriever:
 
         embed_model = HuggingFaceEmbedding(model_name=embedding_model)
 
-        if _has_persisted_vectors(self.persist_dir, self.collection_name):
-            # Normal path: use the pre-built ChromaDB store
-            client = chromadb.PersistentClient(path=str(self.persist_dir))
-            collection = client.get_or_create_collection(self.collection_name)
-            vector_store = ChromaVectorStore(chroma_collection=collection)
-            storage_context = StorageContext.from_defaults(vector_store=vector_store)
-            self.index = VectorStoreIndex.from_vector_store(
-                vector_store=vector_store,
-                storage_context=storage_context,
-                embed_model=embed_model,
-            )
-            self._mode = "persisted"
+        if _has_persisted_vectors(self.persist_dir):
+            try:
+                self.index = _build_persisted_index(self.persist_dir, self.collection_name, embed_model)
+                self._mode = "persisted"
+            except Exception:
+                # chromadb import failed (e.g. protobuf conflict on Python 3.14)
+                self.index = _build_in_memory_index(embed_model, self._graph_json_path)
+                self._mode = "in-memory"
         else:
-            # Cloud / first-run fallback: build a transient in-memory index
             self.index = _build_in_memory_index(embed_model, self._graph_json_path)
             self._mode = "in-memory"
 
@@ -94,8 +111,7 @@ class VectorRetriever:
         top_k = top_k or settings.VECTOR_TOP_K
 
         filters = None
-        # Metadata filters only work reliably with the persisted Chroma store;
-        # the in-memory index has no filter support, so skip them there.
+        # Metadata filters only work reliably with the persisted Chroma store
         if project_name and self._mode == "persisted":
             filters = MetadataFilters(
                 filters=[MetadataFilter(key="project_name", value=project_name, operator=FilterOperator.EQ)]
