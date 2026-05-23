@@ -2,6 +2,7 @@ streamlit>=1.57.0
 pyyaml>=6.0.2
 python-dotenv>=1.1.0
 rapidfuzz>=3.14.5
+pypdf>=4.0.0
 
 # Embeddings
 sentence-transformers>=3.0.0,<6.0.0
