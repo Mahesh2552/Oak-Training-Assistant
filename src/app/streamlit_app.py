@@ -102,11 +102,6 @@ def main() -> None:
         st.subheader("Status")
         st.write(f"**LLM provider**: {llm_info.provider}")
         st.write(f"**LLM model**: {llm_info.model}")
-        retrieval_mode = getattr(vec_ret, "_mode", "unknown")
-        if retrieval_mode == "persisted":
-            st.success("Vector store: ChromaDB (persisted)")
-        else:
-            st.warning("Vector store: in-memory fallback — re-run ingestion for best results")
         # st.write(f"**Graph store**: `{settings.GRAPH_JSON_PATH}`")
         # st.write(f"**Vector store**: `{settings.VECTOR_STORE_DIR}`")
 

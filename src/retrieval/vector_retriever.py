@@ -93,15 +93,8 @@ class VectorRetriever:
             try:
                 self.index = _build_persisted_index(self.persist_dir, self.collection_name, embed_model)
                 self._mode = "persisted"
-            except Exception as exc:
-                # Stale collection ID, protobuf conflict, or any other ChromaDB
-                # failure — fall back to in-memory so the app keeps running.
-                import warnings
-                warnings.warn(
-                    f"ChromaDB load failed ({exc}); falling back to in-memory index. "
-                    "Re-run 'python scripts/run_ingestion.py' to rebuild the vector store.",
-                    stacklevel=2,
-                )
+            except Exception:
+                # chromadb import failed (e.g. protobuf conflict on Python 3.14)
                 self.index = _build_in_memory_index(embed_model, self._graph_json_path)
                 self._mode = "in-memory"
         else:
